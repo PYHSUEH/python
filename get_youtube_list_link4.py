@@ -304,8 +304,20 @@ d1 = getHtml(url3)
 
 d2=getValue3(d1,'dir="ltr" title="','"  aria-describedby="','href="','">')
 
+
+
 for var in d2:
     print (var['key1'],var['key2'])
+
+str1="https://www.youtube.com"+d2[0]['key2']
+print (str1)
+t1 = getHtml(str1)
+d3=getValue3(t1,'spf-link " dir="ltr" href="','" data-sessionlink=','">\n      ','\n    </a>')
+
+print (d3[0]['key2'])
+
+t2 = getHtml(str1)
+d4=getValue3(t2,'img data-ytimg="1" alt="" aria-hidden="true" src="','width="','src="','">')
 
 #print(len(d1))
 

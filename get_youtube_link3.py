@@ -1,11 +1,23 @@
 import urllib.request
 import sqlite3
 import time
+import base64
+import gzip
+
+
+#def dbWord(word):
+#    word=word.replace("'","''")
+#    return word
 
 def dbWord(word):
-    word=word.replace("'","''")
-    return word
+    data = base64.b64encode(word.encode())
+    data1= gzip.compress(data)
+    return data1
 
+def de_dbWord(word):
+    data1_1 = gzip.decompress(word)
+    data2 = base64.b64decode(data1_1.decode())
+    return data2
 
 def getHtml(url1):
     
@@ -50,7 +62,7 @@ def getValue(text1,str1,str2,str1_1,str2_1):
 
     d = {'key1' : 'https://downsub.com/'+strq, 'key2' : str_1 , 'key3' : subtitle1}
     a.append(dict(d))
-    str_sqlite = "INSERT INTO data (input1,output1,output2) VALUES ('%s', '%s', '%s' )" %(dbWord(d["key1"]),dbWord(d["key2"]),dbWord(d["key3"]))
+    str_sqlite = "INSERT INTO data (input1,output1,output2) VALUES ('%s', '%s', '%s' )" %(d["key1"],d["key2"],dbWord(d["key3"]))
     print (str_sqlite)
     conn.execute(str_sqlite)
     conn.commit()
@@ -87,7 +99,7 @@ def getValue(text1,str1,str2,str1_1,str2_1):
 
        d2={'key1':'https://downsub.com/'+str1_q, 'key2' : str_1_2, 'key3' : subtitle2}
        a.append(dict(d2))
-       str_sqlite = "INSERT INTO data (input1,output1,output2) VALUES ('%s', '%s', '%s' )" %(dbWord(d2["key1"]),dbWord(d2["key2"]),dbWord(d2["key3"]))
+       str_sqlite = "INSERT INTO data (input1,output1,output2) VALUES ('%s', '%s', '%s' )" %(d2["key1"],d2["key2"],sqlite3.Binary(dbWord(d["key3"])))
        conn.execute(str_sqlite)
        conn.commit()
 
@@ -137,7 +149,7 @@ def getValue2(text1,str1,str2,str1_1,str2_1,title0):
 
     d = {'key1' : 'https://downsub.com/'+strq, 'key2' : str_1 , 'key3' : subtitle1}
     a.append(dict(d))
-    str_sqlite = "INSERT INTO data (input1,output1,output2) VALUES ('%s', '%s', '%s' )" %(dbWord(title0),dbWord(d["key2"]),dbWord(d["key3"]))
+    str_sqlite = "INSERT INTO data (input1,output1,output2) VALUES ('%s', '%s', '%s' )" %(title0,d["key2"],sqlite3.Binary(dbWord(d["key3"])))
     print (str_sqlite)
     conn.execute(str_sqlite)
     conn.commit()
@@ -174,7 +186,7 @@ def getValue2(text1,str1,str2,str1_1,str2_1,title0):
 
        d2={'key1':'https://downsub.com/'+str1_q, 'key2' : str_1_2, 'key3' : subtitle2}
        a.append(dict(d2))
-       str_sqlite = "INSERT INTO data (input1,output1,output2) VALUES ('%s', '%s', '%s' )" %(dbWord(title0),dbWord(d2["key2"]),dbWord(d2["key3"]))
+       str_sqlite = "INSERT INTO data (input1,output1,output2) VALUES ('%s', '%s', '%s' )" %(title0,d2["key2"],dbWord(d2["key3"]))
        conn.execute(str_sqlite)
        conn.commit()
 
